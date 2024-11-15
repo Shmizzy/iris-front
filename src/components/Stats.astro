@@ -1,0 +1,113 @@
+---
+interface Props {
+    totalCreations: number;
+    totalPixelsDrawn: number;
+    viewers: number;
+}
+
+const { totalCreations = 0, totalPixelsDrawn = 0, viewers = 0 } = Astro.props;
+---
+
+<div class="stats-container">
+    <div class="stats">
+        <div class="stat">
+            <span class="stat-value" id="totalCreations"
+                >{totalCreations.toLocaleString()}</span
+            >
+            <span class="stat-label">Total Creations</span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat">
+            <span class="stat-value" id="totalPixelsDrawn"
+                >{totalPixelsDrawn.toLocaleString()}</span
+            >
+            <span class="stat-label">Total Pixels</span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat">
+            <span class="stat-value" id="viewers"
+                >{viewers.toLocaleString()}</span
+            >
+            <span class="stat-label">Live Viewers</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateStats() {
+        fetch("http://3.216.80.224:3000/api/state/current")
+            .then((response) => response.json())
+            .then((data) => {
+                document.getElementById("totalCreations").textContent =
+                    data.totalCreations.toLocaleString();
+                document.getElementById("totalPixelsDrawn").textContent =
+                    data.totalPixelsDrawn.toLocaleString();
+                document.getElementById("viewers").textContent =
+                    data.viewers.toLocaleString();
+            });
+    }
+
+    setInterval(updateStats, 5000);
+    updateStats();
+</script>
+<style>
+    .stats-container {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        margin-top: 1.5rem;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        flex: 1;
+    }
+
+    .stat-value {
+        color: var(--accent);
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 600;
+        font-family: "Space Grotesk", sans-serif;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        font-weight: 500;
+    }
+
+    .divider {
+        width: 1px;
+        height: 40px;
+        background: var(--border);
+    }
+
+    @media (max-width: 640px) {
+        .stats {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+        }
+
+        .stat {
+            width: 100%;
+        }
+    }
+</style>

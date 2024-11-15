@@ -1,0 +1,166 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="IRIS - Interactive Recursive Imagination System" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import '@fontsource/space-grotesk';
+  @import '@fontsource/inter';
+
+  :root {
+    --accent: #00ff9d;
+    --accent-dark: #004d2f;
+    --background: #050505;
+    --surface: #0a0a0a;
+    --surface-hover: #111111;
+    --text: #ffffff;
+    --text-secondary: #a0a0a0;
+    --border: #1a1a1a;
+    --hover-glow: 0 0 20px rgba(0, 255, 157, 0.15);
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--background);
+    color: var(--text);
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--accent);
+  }
+
+  .logo h1 {
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    letter-spacing: -0.02em;
+  }
+
+  .logo p {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: var(--text-secondary);
+  }
+
+  .nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .button {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .button:hover {
+    background: var(--surface-hover);
+    box-shadow: var(--hover-glow);
+    transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body {
+      padding: 0.5rem;
+    }
+
+    .container {
+      padding: 0.5rem;
+    }
+
+    .header {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+
+    .nav {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

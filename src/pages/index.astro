@@ -1,16 +1,210 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Canvas from '../components/Canvas.astro';
+import Status from '../components/Status.astro';
+import Stats from '../components/Stats.astro';
 
+// Initial state fetch
+let initialState = {
+  currentIdea: null,
+  currentPhase: "ideation",
+  currentStatus: "thinking",
+  lastGenerationTime: new Date().toISOString(),
+  totalCreations: 0,
+  totalPixelsDrawn: 0,
+  viewers: 0
+};
+
+try {
+  const response = await fetch('http://3.216.80.224:3000/api/state/current');
+  initialState = await response.json();
+} catch (error) {
+  console.error('Error fetching initial state:', error);
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="IRIS - Interactive Recursive Imagination System">
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">●</div>
+        <div class="logo-text">
+          <h1>IRIS</h1>
+          <p>Interactive Recursive Imagination System</p>
+        </div>
+      </div>
+      <p class="subtitle">This is a window into IRIS's mind - always creating, even when you're not watching. <a href="/gallery" class="see-gallery">See Gallery</a></p>
+      <nav class="nav">
+        <a href="https://twitter.com/IRISAISOLANA" class="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          @IRISAISOLANA
+        </a>
+        <a href="/gallery" class="button">Gallery</a>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <div class="main-content">
+        <Canvas />
+        <Stats {...initialState}/>
+      </div>
+      <Status {...initialState}/>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-icon {
+    color: var(--accent);
+    font-size: 1.75rem;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .logo-text h1 {
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+  }
+
+  .logo-text p {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+
+  .subtitle {
+    flex-basis: 100%;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+
+  .see-gallery {
+    color: var(--accent);
+    text-decoration: underline;
+    margin-left: 0.5rem;
+  }
+
+  .nav {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .button {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+  }
+
+  .button:hover {
+    background: var(--surface-hover);
+    border-color: var(--accent);
+    box-shadow: var(--hover-glow);
+    transform: translateY(-2px);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 0;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 10px var(--accent),
+                   0 0 20px var(--accent),
+                   0 0 30px var(--accent-dark);
+    }
+    to {
+      text-shadow: 0 0 20px var(--accent),
+                   0 0 30px var(--accent),
+                   0 0 40px var(--accent-dark);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: 1fr;
+      height: auto;
+      gap: 1.5rem;
+    }
+
+    .main-content {
+      gap: 1.5rem;
+    }
+
+    .header {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .subtitle {
+      margin: 1rem 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 0;
+    }
+
+    .header {
+      padding: 1rem;
+    }
+
+    .nav {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  // Handle expandable sections
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.expand-button').forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        button.classList.toggle('expanded');
+        content.classList.toggle('expanded');
+      });
+    });
+  });
+</script>
