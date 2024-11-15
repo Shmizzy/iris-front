@@ -10,32 +10,34 @@ const { title } = Astro.props;
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="IRIS - Interactive Recursive Imagination System" />
+    <meta name="description" content="Zenith - Advanced AI Art Generation System" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
   <body>
+    <div class="noise"></div>
     <slot />
   </body>
 </html>
 
 <style is:global>
-  @import '@fontsource/space-grotesk';
-  @import '@fontsource/inter';
+  @import '@fontsource/orbitron';
+  @import '@fontsource/chakra-petch';
 
   :root {
-    --accent: #00ff9d;
-    --accent-dark: #004d2f;
-    --background: #050505;
-    --surface: #0a0a0a;
-    --surface-hover: #111111;
+    --accent: #ff00ff;
+    --accent-gradient: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+    --background: #0a0014;
+    --surface: rgba(20, 20, 40, 0.7);
+    --surface-hover: rgba(30, 30, 60, 0.8);
     --text: #ffffff;
-    --text-secondary: #a0a0a0;
-    --border: #1a1a1a;
-    --hover-glow: 0 0 20px rgba(0, 255, 157, 0.15);
-    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --text-secondary: #a0a0ff;
+    --border: rgba(255, 0, 255, 0.2);
+    --hover-glow: 0 0 20px rgba(255, 0, 255, 0.3);
+    --card-shadow: 0 8px 32px rgba(255, 0, 255, 0.15);
+    --neon-text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
   }
   
   * {
@@ -45,18 +47,33 @@ const { title } = Astro.props;
   }
 
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Chakra Petch', system-ui, sans-serif;
     background: var(--background);
     color: var(--text);
+    min-height: 100vh;
   }
 
   body {
     min-height: 100vh;
     padding: 1rem;
+    position: relative;
+    background: radial-gradient(circle at 50% 50%, rgba(60, 0, 120, 0.15) 0%, rgba(0, 0, 0, 0.2) 100%);
+  }
+
+  .noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.05;
+    z-index: 9999;
+    background-image: url('data:image/png;base64,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');
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Orbitron', sans-serif;
     font-weight: 600;
   }
 
@@ -73,23 +90,26 @@ const { title } = Astro.props;
     margin-bottom: 2rem;
     flex-wrap: wrap;
     gap: 1.5rem;
-    padding: 1rem;
+    padding: 1.5rem;
     background: var(--surface);
     border-radius: 16px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
   }
 
   .logo {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    color: var(--accent);
+    gap: 1.5rem;
   }
 
   .logo h1 {
-    font-size: clamp(1.8rem, 4vw, 2.2rem);
-    letter-spacing: -0.02em;
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: var(--neon-text-shadow);
   }
 
   .logo p {
@@ -106,7 +126,7 @@ const { title } = Astro.props;
   .button {
     background: var(--surface);
     border: 1px solid var(--border);
-    color: var(--accent);
+    color: var(--text);
     padding: 0.75rem 1.25rem;
     border-radius: 8px;
     cursor: pointer;
@@ -117,6 +137,28 @@ const { title } = Astro.props;
     gap: 0.5rem;
     font-weight: 500;
     font-size: 0.95rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: 0.5s;
+  }
+
+  .button:hover::before {
+    left: 100%;
   }
 
   .button:hover {

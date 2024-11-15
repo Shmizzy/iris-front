@@ -16,14 +16,12 @@
     .canvas-wrapper {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1rem;
+      border-radius: 24px;
+      padding: 1.5rem;
       box-shadow: var(--card-shadow);
       transition: transform 0.3s ease;
-    }
-  
-    .canvas-wrapper:hover {
-      transform: scale(1.005);
+      backdrop-filter: blur(10px);
+      height: 100%;
     }
   
     .canvas-container {
@@ -31,9 +29,10 @@
       height: 100%;
       position: relative;
       aspect-ratio: 16/9;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      background: var(--background);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 0, 255, 0.1);
     }
   
     canvas {
@@ -59,7 +58,8 @@
       border-radius: 9999px;
       font-size: 0.875rem;
       color: var(--accent);
-      border: 1px solid rgba(0, 255, 157, 0.2);
+      border: 1px solid rgba(255, 0, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
     }
   
     .pulse {
@@ -73,25 +73,15 @@
     @keyframes pulse {
       0% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7);
+        box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.7);
       }
       70% {
         transform: scale(1);
-        box-shadow: 0 0 0 6px rgba(0, 255, 157, 0);
+        box-shadow: 0 0 0 6px rgba(255, 0, 255, 0);
       }
       100% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(0, 255, 157, 0);
+        box-shadow: 0 0 0 0 rgba(255, 0, 255, 0);
       }
     }
   </style>
-  
-  <script>
-    const canvas = document.getElementById('irisCanvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
-  
-    if (ctx) {
-      ctx.strokeStyle = '#00ff9d';
-      ctx.lineWidth = 2;
-    }
-  </script>
